@@ -15,6 +15,8 @@
 import AVFoundation
 import UIKit
 import os
+import ModelIO
+import AVFAudio
 
 class ViewController: UIViewController {
   // MARK: Storyboards Connections
@@ -64,7 +66,8 @@ class ViewController: UIViewController {
     } catch let error {
       fatalError(error.localizedDescription)
     }
-
+    print("focal length: \(MDLCamera().focalLength)")
+    
     cameraCapture.delegate = self
     tableView.delegate = self
     tableView.dataSource = self
@@ -96,6 +99,8 @@ class ViewController: UIViewController {
         animated: false)
     }
     delegatesControl.selectedSegmentIndex = 0
+    
+    MusicTools.playLocationMusic("中川和泉 - 山奥少年の恋物語.mp3")
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -316,6 +321,9 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
       }
       fieldName = row.description
       info = String(format: "%.2fms", time)
+    case .FocalLength:
+        fieldName = section.description
+        info = String(format: "%.2f", MDLCamera().focalLength);
     }
 
     cell.fieldNameLabel.text = fieldName
@@ -355,6 +363,7 @@ fileprivate struct InferredData {
 fileprivate enum InferenceSections: Int, CaseIterable {
   case Score
   case Time
+  case FocalLength
 
   var description: String {
     switch self {
@@ -362,6 +371,8 @@ fileprivate enum InferenceSections: Int, CaseIterable {
       return "Score"
     case .Time:
       return "Processing Time"
+    case .FocalLength:
+        return "Focal Length"
     }
   }
 
@@ -371,6 +382,8 @@ fileprivate enum InferenceSections: Int, CaseIterable {
       return 1
     case .Time:
       return ProcessingTimes.allCases.count
+    case .FocalLength:
+        return 1
     }
   }
 }
