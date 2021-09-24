@@ -100,7 +100,7 @@ class ViewController: UIViewController {
     }
     delegatesControl.selectedSegmentIndex = 0
     
-    MusicTools.playLocationMusic("中川和泉 - 山奥少年の恋物語.mp3")
+    MusicTools.playLocationMusic("抬手.m4a")
   }
 
   override func viewWillAppear(_ animated: Bool) {
